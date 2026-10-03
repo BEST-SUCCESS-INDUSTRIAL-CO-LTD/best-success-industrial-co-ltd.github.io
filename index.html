@@ -218,6 +218,11 @@ dialog[open]{animation:rise .24s var(--ease-out)}
 }
 
 
+
+/* Image reveal: show only when fully loaded (no half-drawn images) */
+.card .ph img,.shelf .pic img{opacity:0;transition:opacity .35s var(--ease-out)}
+.card .ph img.ok,.shelf .pic img.ok{opacity:1}
+@media (prefers-reduced-motion: reduce){.card .ph img,.shelf .pic img{transition:none}}
 /* Catalogs */
 .cats{padding-block:var(--space-3xl)}
 .cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-lg)}
@@ -581,7 +586,7 @@ const sysOf=id=>SYS.find(s=>s.id===id);
 
 // Shelf: one machine per system
 const SHELF=[["A",5],["B",9],["C",12],["D",16],["E",26],["F",27],["G",28]];
-$("#shelf").innerHTML=SHELF.map(([s,i])=>`<a href="#products" data-sys="${s}"><div class="pic"><img src="${P[i].img}" decoding="async" alt="${esc(P[i].zh)}"></div><div class="lab"><span class="mono">${s}</span><b>${sysOf(s).zh.replace("系統","")}</b></div></a>`).join("");
+$("#shelf").innerHTML=SHELF.map(([s,i])=>`<a href="#products" data-sys="${s}"><div class="pic"><img src="${P[i].img}" decoding="async" onload="this.classList.add('ok')" alt="${esc(P[i].zh)}"></div><div class="lab"><span class="mono">${s}</span><b>${sysOf(s).zh.replace("系統","")}</b></div></a>`).join("");
 
 let cur="all";
 function seg(){
@@ -591,10 +596,10 @@ function list(){
   const groups=SYS.filter(s=>cur==="all"||s.id===cur);
   $("#list").innerHTML=groups.map(s=>{
     const items=P.map((p,i)=>({...p,i})).filter(p=>p.s===s.id);
-    return `<div class="sys-title"><span class="mono">${s.id}</span><h3>${s.zh}</h3></div><div class="grid">${items.map(p=>`<button class="card" data-i="${p.i}"><div class="ph"><img src="${p.img.replace('img/','img/sm/')}" srcset="${p.img.replace('img/','img/sm/')} 360w, ${p.img} 560w" sizes="(min-width:1000px) 260px, (min-width:700px) 30vw, 46vw" loading="lazy" decoding="async" alt="${esc(p.zh)}"></div><div class="bd"><span class="model">${esc(p.m)}</span><h4>${esc(p.zh)}</h4><div class="spec">${p.sp.slice(0,2).map(x=>`<span>${esc(x[1])}</span>`).join("")}</div></div></button>`).join("")}</div>`;
+    return `<div class="sys-title"><span class="mono">${s.id}</span><h3>${s.zh}</h3></div><div class="grid">${items.map(p=>`<button class="card" data-i="${p.i}"><div class="ph"><img src="${p.img.replace('img/','img/sm/')}" srcset="${p.img.replace('img/','img/sm/')} 360w, ${p.img} 560w" sizes="(min-width:1000px) 260px, (min-width:700px) 30vw, 46vw" decoding="async" onload="this.classList.add('ok')" alt="${esc(p.zh)}"></div><div class="bd"><span class="model">${esc(p.m)}</span><h4>${esc(p.zh)}</h4><div class="spec">${p.sp.slice(0,2).map(x=>`<span>${esc(x[1])}</span>`).join("")}</div></div></button>`).join("")}</div>`;
   }).join("");
 }
-function setSys(id){cur=id;seg();list()}
+function setSys(id){cur=id;seg();list();if(typeof markLoaded==="function")markLoaded()}
 $("#seg").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setSys(b.dataset.sys)});
 $("#shelf").addEventListener("click",e=>{const a=e.target.closest("a");if(a)setSys(a.dataset.sys)});
 
@@ -631,6 +636,8 @@ if(window.self===window.top){
   m.insertBefore(f,m.firstChild);m.classList.add("has-frame");
 }
 setSys("all");
+function markLoaded(){document.querySelectorAll(".card .ph img,.shelf .pic img").forEach(function(i){if(i.complete&&i.naturalWidth)i.classList.add("ok")})}
+markLoaded();
 </script>
 
 </body>
