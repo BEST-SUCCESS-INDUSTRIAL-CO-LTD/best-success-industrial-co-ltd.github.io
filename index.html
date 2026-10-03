@@ -564,7 +564,7 @@ document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",async()
 // Google Maps preview: only on the live site (not inside an embedded preview frame)
 if(window.self===window.top){
   const m=$("#map"),f=document.createElement("iframe");
-  f.src="https://www.google.com/maps?q="+encodeURIComponent("台中市烏日區溪南路一段680巷409弄19-8號 鈞成興業有限公司")+"&output=embed&hl=zh-TW";
+  f.src="https://www.google.com/maps?q="+encodeURIComponent("鈞成興業有限公司")+"&output=embed&hl=zh-TW";
   f.title="鈞成興業有限公司 地圖";f.loading="lazy";f.referrerPolicy="no-referrer-when-downgrade";
   m.insertBefore(f,m.firstChild);m.classList.add("has-frame");
 }
