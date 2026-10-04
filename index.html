@@ -95,7 +95,7 @@ a{color:var(--accent)}
 .wm b{font-weight:900;font-size:1.25rem;letter-spacing:.14em}
 .wm small{font-size:.5625rem;font-weight:500;letter-spacing:.2em;color:var(--muted);margin-top:5px;white-space:nowrap}
 .wm-bar b{font-size:1.125rem;letter-spacing:.08em;white-space:nowrap}
-@media (max-width:380px){.wm-bar b{font-size:1rem;letter-spacing:.04em}.wm-bar small{letter-spacing:.12em}}
+@media (max-width:380px){.bar .wrap{gap:10px}.bar .tag{flex-shrink:0}.bar .tag img{height:17px}.bar .tag{padding-left:10px}.wm-bar small{font-size:.5rem;letter-spacing:.04em}.wm-bar b{font-size:1rem;letter-spacing:.04em}.wm-bar small{letter-spacing:.12em}}
 .wm .agent{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid var(--rule);font-size:.6875rem;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
 .wm .agent img{height:22px;width:auto}
 
@@ -117,7 +117,15 @@ a{color:var(--accent)}
 @media (max-width:900px){.bar .tag span{display:none}}
 @media (max-width:520px){.bar > .wrap > .btn{display:none}}
 @media (max-width:780px){
-  .bar .tag{display:none}
+  .bar .tag{padding-left:12px;gap:0;flex-shrink:0}
+  .menu{flex-shrink:0}
+  .wm-bar{min-width:0;overflow:hidden}
+  .wm-bar small{overflow:hidden;text-overflow:ellipsis}
+}
+@media (max-width:480px){
+  .bar .wrap{gap:12px}
+  .wm-bar small{font-size:.5rem;letter-spacing:.05em}
+  .bar .tag img{height:20px}
   .nav{display:none;position:absolute;inset:100% 0 auto 0;background:var(--surface);border-bottom:1px solid var(--rule);flex-direction:column;padding:var(--space-xs) var(--gutter) var(--space-md)}
   .nav.open{display:flex}
   .nav a{padding:12px 4px;border-radius:0;border-bottom:1px solid var(--rule);font-size:var(--text-base)}
@@ -125,6 +133,7 @@ a{color:var(--accent)}
   .bar .btn{margin-left:0}
 }
 
+@media (max-width:340px){.wm-bar small{letter-spacing:0;font-size:.47rem}.bar .wrap{gap:8px}}
 /* Hero */
 .hero{padding-block:var(--space-2xl) var(--space-xl)}
 .hero-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:var(--space-lg) var(--space-2xl);align-items:end}
